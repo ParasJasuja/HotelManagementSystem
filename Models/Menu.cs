@@ -19,10 +19,14 @@ namespace HotelManagementSystem.Models
         public int MenuId { get; set; }
         [StringLength(100)]
         [Unicode(false)]
+        [Display(Name = "Type")]
         public string MenuType { get; set; } = null!;
+        [Display(Name = "Description")]
         public string MenuDescription { get; set; } = null!;
         [Column(TypeName = "money")]
+        [Display(Name = "Price")]
         public decimal MenuPrice { get; set; }
+        [Display(Name = "Name")]
         public string MenuName { get; set; } = null!;
 
         [InverseProperty("Menu")]

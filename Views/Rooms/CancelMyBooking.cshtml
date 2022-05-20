@@ -1,13 +1,13 @@
 ﻿@model HotelManagementSystem.Models.Booking
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Cancel Booking";
 }
 
-<h1>Details</h1>
+<h1>Cancel Booking</h1>
 
+<h3>Are you sure you want to Cancel this?</h3>
 <div>
-    <h4>Booking</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -41,20 +41,28 @@
             @Html.DisplayFor(model => model.BookingTime)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RoomNoNavigation)
+            @Html.DisplayNameFor(model => model.RoomNoNavigation.RoomCharges)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RoomNoNavigation.RoomNo)
+            @Html.DisplayFor(model => model.RoomNoNavigation.RoomCharges)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
+            @Html.DisplayNameFor(model => model.RoomNoNavigation.RoomType)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.UserId)
+            @Html.DisplayFor(model => model.RoomNoNavigation.RoomType)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RoomNoNavigation.RoomDescription)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RoomNoNavigation.RoomDescription)
         </dd>
     </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.BookingId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    
+    <form asp-action="CancelMyBooking">
+        <input type="hidden" asp-for="BookingId" />
+        <input type="submit" value="Cancel" class="btn btn-danger" /> |
+        <a asp-action="MyBookings">Back to My Bookings</a>
+    </form>
 </div>

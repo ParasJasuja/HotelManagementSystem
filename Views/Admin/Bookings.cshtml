@@ -1,14 +1,13 @@
 ﻿@model IEnumerable<HotelManagementSystem.Models.Booking>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Bookings";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
 }
 
-<h1>Index</h1>
+<h1>Bookings</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -61,9 +60,9 @@
                 @Html.DisplayFor(modelItem => item.User.UserId)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.BookingId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.BookingId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.BookingId">Delete</a>
+                @*<a asp-action="BookingEdit" asp-route-id="@item.BookingId">Edit</a> |*@
+                <a asp-action="BookingDetails" asp-route-id="@item.BookingId">Details</a>
+                @*<a asp-action="BookingDelete" asp-route-id="@item.BookingId">Delete</a>*@
             </td>
         </tr>
 }

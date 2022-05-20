@@ -1,17 +1,19 @@
 ﻿@model IEnumerable<HotelManagementSystem.Models.Menu>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Menus";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
 }
 
-<h1>Menu</h1>
+<h1>Index</h1>
 
+<p>
+    <a asp-action="MenuCreate">Create New</a>
+</p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.MenuName)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.MenuType)
             </th>
@@ -21,16 +23,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.MenuPrice)
             </th>
-            
+            <th>
+                @Html.DisplayNameFor(model => model.MenuName)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MenuName)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MenuType)
             </td>
@@ -40,12 +41,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.MenuPrice)
             </td>
-            
             <td>
-                @*<a asp-action="Edit" asp-route-id="@item.MenuId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MenuId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MenuId">Delete</a>*@
-                <a class="btn btn-primary" asp-action="Order" asp-route-id="@item.MenuId">Order</a>
+                @Html.DisplayFor(modelItem => item.MenuName)
+            </td>
+            <td>
+                <a asp-action="MenuEdit" asp-route-id="@item.MenuId">Edit</a> |
+                <a asp-action="MenuDetails" asp-route-id="@item.MenuId">Details</a> |
+                <a asp-action="MenuDelete" asp-route-id="@item.MenuId">Delete</a>
             </td>
         </tr>
 }

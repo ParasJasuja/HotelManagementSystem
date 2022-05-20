@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HotelManagementSystem.Data;
 using HotelManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HotelManagementSystem.Controllers
 {
+    [Authorize(Roles = "User")]
     public class MenusController : Controller
     {
         private readonly HotelManagementSystemDbContext _context;
@@ -19,7 +21,7 @@ namespace HotelManagementSystem.Controllers
             _context = context;
         }
 
-        // GET: Menus
+        [Authorize]
         public async Task<IActionResult> Index()
         {
               return _context.Menus != null ? 
@@ -27,7 +29,6 @@ namespace HotelManagementSystem.Controllers
                           Problem("Entity set 'HotelManagementSystemDbContext.Menus'  is null.");
         }
 
-        // GET: Menus/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Menus == null)
@@ -44,115 +45,91 @@ namespace HotelManagementSystem.Controllers
 
             return View(menu);
         }
-
-        // GET: Menus/Create
-        public IActionResult Create()
+        public async Task<IActionResult> MyOrders()
         {
-            return View();
+            var hotelManagementSystemDbContext = _context.Orders.Include(o => o.Menu).Include(o => o.User).Where(m => m.UserId == Int32.Parse(User.Claims.First().Value));
+            return View(await hotelManagementSystemDbContext.ToListAsync());
+        }
+        public IActionResult Order(int? id)
+        {
+            if (id == null || _context.Menus == null)
+            {
+                return NotFound();
+            }
+            var UserId = Int32.Parse(User.Claims.First().Value);
+            var order = new Order();
+            order.MenuId = (int)id;
+            order.UserId = (int)UserId;
+            return View(order);
         }
 
-        // POST: Menus/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MenuId,MenuType,MenuDescription,MenuPrice,MenuName")] Menu menu)
+        public async Task<IActionResult> Order([Bind("MenuId,UserId,Quantity")] Order order)
         {
+            Console.WriteLine(order);
             if (ModelState.IsValid)
             {
-                _context.Add(menu);
+                _context.Add(order);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("MyOrders");
             }
-            return View(menu);
+            return View(order);
         }
-
-        // GET: Menus/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> MyOrderDetails(int? id)
         {
-            if (id == null || _context.Menus == null)
+            if (id == null || _context.Orders == null)
             {
                 return NotFound();
             }
 
-            var menu = await _context.Menus.FindAsync(id);
-            if (menu == null)
+            var order = await _context.Orders
+                .Include(o => o.Menu)
+                .Include(o => o.User)
+                .FirstOrDefaultAsync(m => m.OrderId == id);
+            if (order == null)
             {
                 return NotFound();
             }
-            return View(menu);
+
+            return View(order);
+        }
+        public async Task<IActionResult> CancelMyOrder(int? id)
+        {
+            if (id == null || _context.Orders == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _context.Orders
+                .Include(o => o.Menu)
+                .Include(o => o.User)
+                .FirstOrDefaultAsync(m => m.OrderId == id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return View(order);
         }
 
-        // POST: Menus/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Orders/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MenuId,MenuType,MenuDescription,MenuPrice,MenuName")] Menu menu)
+        public async Task<IActionResult> CancelMyOrder(int id)
         {
-            if (id != menu.MenuId)
+            if (_context.Orders == null)
             {
-                return NotFound();
+                return Problem("Entity set 'HotelManagementSystemDbContext.Orders'  is null.");
             }
-
-            if (ModelState.IsValid)
+            var order = await _context.Orders.FindAsync(id);
+            if (order != null)
             {
-                try
-                {
-                    _context.Update(menu);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MenuExists(menu.MenuId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                order.OrderStatus = "Canceled";
+                _context.Orders.Update(order);
+                await _context.SaveChangesAsync();
             }
-            return View(menu);
-        }
-
-        // GET: Menus/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Menus == null)
-            {
-                return NotFound();
-            }
-
-            var menu = await _context.Menus
-                .FirstOrDefaultAsync(m => m.MenuId == id);
-            if (menu == null)
-            {
-                return NotFound();
-            }
-
-            return View(menu);
-        }
-
-        // POST: Menus/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Menus == null)
-            {
-                return Problem("Entity set 'HotelManagementSystemDbContext.Menus'  is null.");
-            }
-            var menu = await _context.Menus.FindAsync(id);
-            if (menu != null)
-            {
-                _context.Menus.Remove(menu);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("MyOrders");
         }
 
         private bool MenuExists(int id)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using HotelManagementSystem.Utility;
 
 namespace HotelManagementSystem.Models
 {
@@ -16,10 +17,12 @@ namespace HotelManagementSystem.Models
         public int UserId { get; set; }
         [StringLength(100)]
         [Unicode(false)]
-        public string BookingStatus { get; set; } = null!;
+        [ValidValue("Pending", "Approved", "Canceled", "Denied")]
+        public string BookingStatus { get; set; } = "Pending";
         [StringLength(100)]
         [Unicode(false)]
-        public string PaymentStatus { get; set; } = null!;
+        [ValidValue("Pending", "Failed", "Canceled", "Success")]
+        public string PaymentStatus { get; set; } = "Pending";
         [Column(TypeName = "datetime")]
         public DateTime DurationStart { get; set; }
         [Column(TypeName = "datetime")]
@@ -29,9 +32,9 @@ namespace HotelManagementSystem.Models
 
         [ForeignKey("RoomNo")]
         [InverseProperty("Bookings")]
-        public virtual Room RoomNoNavigation { get; set; } = null!;
+        public virtual Room? RoomNoNavigation { get; set; }
         [ForeignKey("UserId")]
         [InverseProperty("Bookings")]
-        public virtual User User { get; set; } = null!;
+        public virtual User? User { get; set; }
     }
 }

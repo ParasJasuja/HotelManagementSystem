@@ -1,7 +1,9 @@
 ﻿@model HotelManagementSystem.Models.Order
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Order";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
 }
 
 <h1>Edit</h1>
@@ -10,27 +12,30 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="OrderEdit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="OrderId" />
-            <div class="form-group">
-                <label asp-for="MenuId" class="control-label"></label>
-                <select asp-for="MenuId" class="form-control" asp-items="ViewBag.MenuId"></select>
-                <span asp-validation-for="MenuId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
-                <span asp-validation-for="UserId" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="@Model.MenuId" />
+            <input type="hidden" asp-for="@Model.UserId" />
+
             <div class="form-group">
                 <label asp-for="OrderStatus" class="control-label"></label>
-                <input asp-for="OrderStatus" class="form-control" />
+                <select asp-for="OrderStatus" class="form-control">
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Canceled">Canceled</option>
+                    <option value="Denied">Denied</option>
+                </select>
                 <span asp-validation-for="OrderStatus" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PaymentStatus" class="control-label"></label>
-                <input asp-for="PaymentStatus" class="form-control" />
+                <select asp-for="PaymentStatus" class="form-control">
+                    <option value="Pending">Pending</option>
+                    <option value="Success">Success</option>
+                    <option value="Canceled">Canceled</option>
+                    <option value="Failed">Failed</option>
+                </select>
                 <span asp-validation-for="PaymentStatus" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -38,7 +43,7 @@
                 <input asp-for="OrderTime" class="form-control" />
                 <span asp-validation-for="OrderTime" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-2">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -46,7 +51,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Orders">Back to List</a>
 </div>
 
 @section Scripts {

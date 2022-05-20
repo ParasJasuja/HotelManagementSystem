@@ -1,0 +1,45 @@
+﻿@model HotelManagementSystem.Models.Booking
+
+@{
+    ViewData["Title"] = "Book Room";
+}
+
+<h1>Booking</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="BookRoom">
+            @if (!string.IsNullOrEmpty(ViewBag.Message))    
+            {    
+                <span class="text-danger">    
+                    @ViewBag.Message    
+                </span>    
+            }
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="RoomNo" value="@Model.RoomNo" />
+            <input type="hidden" asp-for="UserId" value="@Model.UserId" />
+            <div class="form-group">
+                <label asp-for="DurationStart" class="control-label"></label>
+                <input asp-for="DurationStart" class="form-control" />
+                <span asp-validation-for="DurationStart" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DurationEnd" class="control-label"></label>
+                <input asp-for="DurationEnd" class="form-control" />
+                <span asp-validation-for="DurationEnd" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <input type="submit" value="Book Room" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

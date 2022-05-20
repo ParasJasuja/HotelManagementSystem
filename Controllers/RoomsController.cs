@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HotelManagementSystem.Data;
 using HotelManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HotelManagementSystem.Controllers
 {
+    [Authorize(Roles = "User")]
     public class RoomsController : Controller
     {
         private readonly HotelManagementSystemDbContext _context;
@@ -20,6 +22,7 @@ namespace HotelManagementSystem.Controllers
         }
 
         // GET: Rooms
+         
         public async Task<IActionResult> Index()
         {
               return _context.Rooms != null ? 
@@ -28,6 +31,7 @@ namespace HotelManagementSystem.Controllers
         }
 
         // GET: Rooms/Details/5
+         
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Rooms == null)
@@ -45,15 +49,11 @@ namespace HotelManagementSystem.Controllers
             return View(room);
         }
 
-        // GET: Rooms/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Rooms/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("RoomNo,RoomType,RoomDescription,RoomCharges,IsOpen")] Room room)
@@ -67,94 +67,100 @@ namespace HotelManagementSystem.Controllers
             return View(room);
         }
 
-        // GET: Rooms/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [ActionName("BookRoom")]
+        public async Task<IActionResult> Book(int ?id)
         {
             if (id == null || _context.Rooms == null)
             {
                 return NotFound();
             }
-
-            var room = await _context.Rooms.FindAsync(id);
-            if (room == null)
-            {
-                return NotFound();
-            }
-            return View(room);
+            var UserId = Int32.Parse(User.Claims.First().Value);
+            var booking = new Booking();
+            booking.RoomNo = (int)id;
+            booking.UserId = (int)UserId;
+            booking.DurationStart = DateTime.Now;
+            booking.DurationEnd = DateTime.Now;
+            
+            return View(booking);
         }
 
-        // POST: Rooms/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RoomNo,RoomType,RoomDescription,RoomCharges,IsOpen")] Room room)
+         
+        public async Task<IActionResult> BookRoom([Bind("RoomNo,UserId,DurationStart,DurationEnd,BookingTime")] Booking booking)
         {
-            if (id != room.RoomNo)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(room);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RoomExists(room.RoomNo))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _context.Add(booking);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("MyBookings");
             }
-            return View(room);
+            else
+            {
+                ViewBag.Message = Convert.ToString(booking);
+            }
+            return View(booking);
         }
-
-        // GET: Rooms/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> MyBookings()
         {
-            if (id == null || _context.Rooms == null)
+            var hotelManagementSystemDbContext = _context.Bookings.Include(b => b.RoomNoNavigation).Include(b => b.User).Where(m => m.UserId == Int32.Parse(User.Claims.First().Value));
+            return View(await hotelManagementSystemDbContext.ToListAsync());
+        }
+        public async Task<IActionResult> MyBookingDetails(int? id)
+        {
+            Console.WriteLine(id);
+            if (id == null || _context.Bookings == null)
             {
                 return NotFound();
             }
 
-            var room = await _context.Rooms
-                .FirstOrDefaultAsync(m => m.RoomNo == id);
-            if (room == null)
+            var booking = await _context.Bookings
+                .Include(b => b.RoomNoNavigation)
+                .Include(b => b.User)
+                .FirstOrDefaultAsync(m => m.BookingId == (int)id);
+            if (booking == null)
             {
                 return NotFound();
             }
 
-            return View(room);
+            return View(booking);
+        }
+        public async Task<IActionResult> CancelMyBooking(int? id)
+        {
+            if (id == null || _context.Bookings == null)
+            {
+                return NotFound();
+            }
+
+            var booking = await _context.Bookings
+                .Include(b => b.RoomNoNavigation)
+                .Include(b => b.User)
+                .FirstOrDefaultAsync(m => m.BookingId == id);
+            if (booking == null)
+            {
+                return NotFound();
+            }
+
+            return View(booking);
         }
 
-        // POST: Rooms/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> CancelMyBooking(int id)
         {
-            if (_context.Rooms == null)
+            if (_context.Bookings == null)
             {
-                return Problem("Entity set 'HotelManagementSystemDbContext.Rooms'  is null.");
+                return Problem("Entity set 'HotelManagementSystemDbContext.Bookings'  is null.");
             }
-            var room = await _context.Rooms.FindAsync(id);
-            if (room != null)
+            var booking = await _context.Bookings.FindAsync(id);
+            if (booking != null)
             {
-                _context.Rooms.Remove(room);
+                booking.BookingStatus = "Canceled";
+                _context.Bookings.Update(booking);
+                _context.SaveChanges();
             }
-            
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
         private bool RoomExists(int id)
         {
           return (_context.Rooms?.Any(e => e.RoomNo == id)).GetValueOrDefault();

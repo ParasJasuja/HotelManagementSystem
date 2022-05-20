@@ -5,7 +5,7 @@ namespace HotelManagementSystem.Utility
     {
         private string[] _allowedValues;
 
-        public ValidValueAttribute(string[] allowedValues)
+        public ValidValueAttribute(params string[] allowedValues)
         {
             _allowedValues = allowedValues;
         }

@@ -36,8 +36,6 @@ namespace HotelManagementSystem.Data
 
             modelBuilder.Entity<Booking>(entity =>
             {
-                entity.Property(e => e.BookingId).ValueGeneratedNever();
-
                 entity.Property(e => e.BookingTime).HasDefaultValueSql("(getdate())");
 
                 entity.HasOne(d => d.RoomNoNavigation)

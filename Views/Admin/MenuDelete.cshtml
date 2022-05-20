@@ -1,7 +1,9 @@
 ﻿@model HotelManagementSystem.Models.Menu
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete Menu";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
 }
 
 <h1>Delete</h1>
@@ -37,7 +39,7 @@
         </dd>
     </dl>
     
-    <form asp-action="Delete">
+    <form asp-action="MenuDelete">
         <input type="hidden" asp-for="MenuId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
