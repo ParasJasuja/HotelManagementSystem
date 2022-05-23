@@ -14,5 +14,15 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    min-height: 100vh;
+    background-image: url(https://cdn.britannica.com/96/115096-050-5AFDAF5D/Bellagio-Hotel-Casino-Las-Vegas.jpg);
+    backdrop-filter: blur(8px);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
+    overflow-y: auto;
+}
+.h-90 {
+    height: 85vh;
 }
