@@ -32,6 +32,7 @@ namespace HotelManagementSystem.Models
 
         [InverseProperty("RoomNoNavigation")]
         public virtual ICollection<Booking> Bookings { get; set; }
+        public bool isActive { get; set; } = true;
 
         public static implicit operator Room(int v)
         {

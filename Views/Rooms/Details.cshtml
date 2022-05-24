@@ -32,7 +32,15 @@
             @Html.DisplayNameFor(model => model.IsOpen)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsOpen)
+            
+                            @if (Model.IsOpen)
+                            {
+                                <div style="width:20px; height:20px;" class="rounded-circle bg-success"></div>
+                            }
+                            else
+                            {
+                                <div style="width:20px; height:20px;" class="rounded-circle bg-danger"></div>
+                            }
         </dd>
     </dl>
 </div>

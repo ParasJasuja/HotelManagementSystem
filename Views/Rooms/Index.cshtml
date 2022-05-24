@@ -28,24 +28,37 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RoomType)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RoomDescription)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RoomCharges)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsOpen)
-                    </td>
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.RoomNo">Details</a>
-                        <a class="btn btn-primary m-lg-3 m-sm-1" asp-action="BookRoom" asp-route-id="@item.RoomNo">Book Room</a>
-                    </td>
-                </tr>
+                @if (item.isActive)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RoomType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RoomDescription)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RoomCharges)
+                        </td>
+                        <td>
+                            
+                            @if (item.IsOpen)
+                            {
+                                <div style="width:20px; height:20px;" class="m-auto rounded-circle bg-success"></div>
+                            }
+                            else
+                            {
+                                <div style="width:20px; height:20px;" class="m-auto rounded-circle bg-danger"></div>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@item.RoomNo">Details</a>
+                            <a class="btn btn-primary m-lg-3 m-sm-1" asp-action="BookRoom" asp-route-id="@item.RoomNo">Book Room</a>
+                        </td>
+                    </tr>
+                }
+
+                
             }
         </tbody>
     }

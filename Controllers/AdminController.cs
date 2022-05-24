@@ -411,7 +411,8 @@ namespace HotelManagementSystem.Controllers
             var room = await _context.Rooms.FindAsync(id);
             if (room != null)
             {
-                _context.Rooms.Remove(room);
+                room.isActive = false;
+                _context.Rooms.Update(room);
             }
 
             await _context.SaveChangesAsync();
@@ -545,7 +546,8 @@ namespace HotelManagementSystem.Controllers
             var menu = await _context.Menus.FindAsync(id);
             if (menu != null)
             {
-                _context.Menus.Remove(menu);
+                menu.isActive = false;
+                _context.Menus.Update(menu);
             }
 
             await _context.SaveChangesAsync();

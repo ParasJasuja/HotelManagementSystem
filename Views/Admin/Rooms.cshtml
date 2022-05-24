@@ -26,6 +26,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.IsOpen)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.isActive)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -42,8 +45,25 @@
                 @Html.DisplayFor(modelItem => item.RoomCharges)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsOpen)
+                @if (item.IsOpen)
+                    {
+                        <div style="width:20px; height:20px;" class="m-auto rounded-circle bg-success"></div>
+                    }
+                    else
+                    {
+                        <div style="width:20px; height:20px;" class="m-auto rounded-circle bg-danger"></div>
+                    }
             </td>
+            <td>
+                    @if (item.isActive)
+                    {
+                        <div style="width:20px; height:20px;" class="m-auto rounded-circle bg-success"></div>
+                    }
+                    else
+                    {
+                        <div style="width:20px; height:20px;" class="m-auto rounded-circle bg-danger"></div>
+                    }
+                </td>
             <td>
                 <a asp-action="RoomEdit" asp-route-id="@item.RoomNo">Edit</a> |
                 <a asp-action="RoomDetails" asp-route-id="@item.RoomNo">Details</a> |

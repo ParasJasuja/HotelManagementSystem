@@ -19,6 +19,13 @@ namespace HotelManagementSystem.Controllers
         [AllowAnonymous]
         public IActionResult Register()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                if(User.Claims.Last().Value == "User")
+                    return RedirectToAction("Index");
+                else if(User.Claims.Last().Value == "Admin")
+                    return RedirectToAction("/Admin");
+            }
             return View();
         }
         [HttpPost]
@@ -40,7 +47,14 @@ namespace HotelManagementSystem.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction(ReturnUrl);
+                if (User.Identity.IsAuthenticated)
+                {
+                    if (User.Claims.Last().Value == "User")
+                        return RedirectToAction(ReturnUrl);
+                    else if (User.Claims.Last().Value == "Admin")
+                        return RedirectToAction("/Admin");
+                }
+                
             }
             LoginViewModel objLoginModel = new LoginViewModel();
             objLoginModel.ReturnUrl = ReturnUrl;

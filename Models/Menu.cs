@@ -28,6 +28,8 @@ namespace HotelManagementSystem.Models
         public decimal MenuPrice { get; set; }
         [Display(Name = "Name")]
         public string MenuName { get; set; } = null!;
+        public bool isActive { get; set; } = true;
+
 
         [InverseProperty("Menu")]
         public virtual ICollection<Order> Orders { get; set; }
