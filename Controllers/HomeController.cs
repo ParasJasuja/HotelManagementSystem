@@ -15,6 +15,12 @@ namespace HotelManagementSystem.Controllers
 
         public IActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+             
+                if (User.Claims.Last().Value == "Admin")
+                    return RedirectToAction("Index", "Admin");
+            }
             return View();
         }
 
