@@ -1,0 +1,27 @@
+﻿<ul class="navbar-nav">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Rooms" asp-action="MyBookings">My Bookings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Menus" asp-action="MyOrders">My Orders</a>
+                        </li>
+        <li>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Profile" asp-route-id="@User.Claims.First().Value">@User.Identity.Name</a>
+        </li>
+        <li>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+        </li>
+    }
+    else
+    {
+        <li>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+        </li>    
+    }
+ 
+</ul>

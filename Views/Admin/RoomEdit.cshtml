@@ -1,0 +1,51 @@
+﻿@model HotelManagementSystem.Models.Room
+
+@{
+    ViewData["Title"] = "Edit Room";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+<h1>Edit</h1>
+
+<h4>Room</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="RoomEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RoomNo" />
+            <div class="form-group">
+                <label asp-for="RoomType" class="control-label"></label>
+                <input asp-for="RoomType" class="form-control" />
+                <span asp-validation-for="RoomType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoomDescription" class="control-label"></label>
+                <input asp-for="RoomDescription" class="form-control" />
+                <span asp-validation-for="RoomDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoomCharges" class="control-label"></label>
+                <input asp-for="RoomCharges" class="form-control" />
+                <span asp-validation-for="RoomCharges" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsOpen" class="control-label"></label>
+                <input asp-for="IsOpen" type="checkbox"  />
+                <span asp-validation-for="IsOpen" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Rooms">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

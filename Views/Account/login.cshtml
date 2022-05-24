@@ -1,0 +1,53 @@
+﻿@model HotelManagementSystem.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+<div class="col-md-6 col-sm-12 m-auto">
+<h1>Login</h1>
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12 flex-column justify-content-center align-content-center m-auto">
+        <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (!string.IsNullOrEmpty(ViewBag.Message))    
+            {    
+                <span class="text-danger">    
+                    @ViewBag.Message    
+                </span>    
+            }    
+            @Html.HiddenFor(x => x.ReturnUrl) 
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HashPassword" class="control-label"></label>
+                <input asp-for="HashPassword" type="password" class="form-control" />
+                <span asp-validation-for="HashPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">    
+                <div class="checkbox">    
+                    <label>    
+                        <input asp-for="RememberLogin" /> @Html.DisplayNameFor(model => model.RememberLogin)    
+                    </label>    
+                </div>    
+            </div>
+            <div class="form-group mt-2">
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+             
+        </form>
+        <div>
+            <a asp-action="Register">Create Account</a>
+        </div>
+    </div>
+</div>
+
+
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

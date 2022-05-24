@@ -1,0 +1,51 @@
+﻿@model HotelManagementSystem.Models.Menu
+
+@{
+    ViewData["Title"] = "Edit Menu";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+<h1>Edit</h1>
+
+<h4>Menu</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="MenuEdit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MenuId" />
+            <div class="form-group">
+                <label asp-for="MenuType" class="control-label"></label>
+                <input asp-for="MenuType" class="form-control" />
+                <span asp-validation-for="MenuType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MenuDescription" class="control-label"></label>
+                <input asp-for="MenuDescription" class="form-control" />
+                <span asp-validation-for="MenuDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MenuPrice" class="control-label"></label>
+                <input asp-for="MenuPrice" class="form-control" />
+                <span asp-validation-for="MenuPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MenuName" class="control-label"></label>
+                <input asp-for="MenuName" class="form-control" />
+                <span asp-validation-for="MenuName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Menus">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,78 @@
+﻿@model HotelManagementSystem.Models.User
+
+@{
+    ViewData["Title"] = "Register";
+}
+<div class="col-md-6 col-sm-12 m-auto">
+<h1>Register</h1>
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12 flex-column justify-content-center align-content-center m-auto">
+        <form asp-action="Register">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PermanentAddress" class="control-label"></label>
+                <input asp-for="PermanentAddress" class="form-control" />
+                <span asp-validation-for="PermanentAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+               @* <input asp-for="Gender" class="form-control" />*@
+                <select asp-for="Gender" class="form-control">
+                    <option>Please select one</option>
+                    <option value="Male">Male</option>  
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            @*<div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="EmailConfirmed" /> @Html.DisplayNameFor(model => model.EmailConfirmed)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PhoneNoConfirmed" /> @Html.DisplayNameFor(model => model.PhoneNoConfirmed)
+                </label>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HashPassword" class="control-label"></label>
+                <input asp-for="HashPassword" type="password" class="form-control" />
+                <span asp-validation-for="HashPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <input type="submit" value="Register" class="btn btn-primary" />
+            </div>
+        </form>
+        <div>
+    <a asp-action="Login">Already have Account?</a>
+</div>
+    </div>
+</div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

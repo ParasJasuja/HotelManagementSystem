@@ -1,0 +1,56 @@
+﻿@model IEnumerable<HotelManagementSystem.Models.Room>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Rooms</h1>
+<table class="table">
+    @if (Model.First() != null)
+    {
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.RoomType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RoomDescription)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RoomCharges)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsOpen)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoomType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoomDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoomCharges)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsOpen)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.RoomNo">Details</a>
+                        <a class="btn btn-primary m-lg-3 m-sm-1" asp-action="BookRoom" asp-route-id="@item.RoomNo">Book Room</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    }
+    else
+    {
+        <p>No Rooms Available</p>
+    }
+</table>
